@@ -43,8 +43,7 @@ namespace WebApplication2.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var employees = await context.Employees.ToListAsync();
-            ViewBag.Employees = employees;
+            await GetItemWithViewBag();
 
             UpdateBlogVm vm = new UpdateBlogVm
             {
@@ -67,24 +66,25 @@ namespace WebApplication2.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var employees = await context.Employees.ToListAsync();
-                ViewBag.Employees = employees;
+                await GetItemWithViewBag();
                 return View();
             }
 
             if (!vm.Image?.CheckType() ?? false)
             {
+                await GetItemWithViewBag();
                 ModelState.AddModelError("Image", "Yalniz sekil formatinda data daxil etmelisiniz.");
                 return View(vm);
             }
 
             if (vm.Image?.CheckSize(2) ?? false)
             {
+                await GetItemWithViewBag();
                 ModelState.AddModelError("Image", "Max size 2mb olmalidir.");
                 return View(vm);
             }
 
-            var existingBlog = await context.Blogs.FindAsync(vm.Id);
+            var existingBlog = await context.Blogs.Include(x=>x.BlogTags).FirstOrDefaultAsync(x=>x.Id == vm.Id);
             if (existingBlog == null)
             {
                 return NotFound();
@@ -105,11 +105,31 @@ namespace WebApplication2.Areas.Admin.Controllers
             }
 
 
+
             existingBlog.Title = vm.Title;
             existingBlog.Text = vm.Text;
             existingBlog.UpdatedDate = DateTime.Now;
             existingBlog.PostedDate = vm.PostedDate;
             existingBlog.EmployeeId = vm.EmployeeId;
+            existingBlog.BlogTags.Clear();
+
+
+            if (vm.TagIds is not null)
+            {
+                foreach (var tagId in vm.TagIds)
+                {
+                    BlogTag blogTag = new BlogTag()
+                    {
+                        TagId = tagId,
+                        Blog = existingBlog
+                    };
+
+                    existingBlog.BlogTags.Add(blogTag);
+                }
+
+            }
+
+
             context.Blogs.Update(existingBlog);
             await context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -122,7 +142,7 @@ namespace WebApplication2.Areas.Admin.Controllers
         {
             var blogs = await context.Blogs.ToListAsync();
 
-            await GetEmployeeWithViewBag();
+            await GetItemWithViewBag();
 
             return View();
         }
@@ -131,7 +151,7 @@ namespace WebApplication2.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBlogVm vm)
         {
-            await GetEmployeeWithViewBag();
+            await GetItemWithViewBag();
 
             if (!ModelState.IsValid)
             {
@@ -145,7 +165,7 @@ namespace WebApplication2.Areas.Admin.Controllers
 
                 if (!IsExistTagId)
                 {
-                    await GetEmployeeWithViewBag();
+                    await GetItemWithViewBag();
                     ModelState.AddModelError("TagIds", "Bele bir tag movcud deil! ");
                     return View();
                 }
@@ -205,7 +225,7 @@ namespace WebApplication2.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        private async Task GetEmployeeWithViewBag()
+        private async Task GetItemWithViewBag()
         {
             var employees = await context.Employees.ToListAsync();
 

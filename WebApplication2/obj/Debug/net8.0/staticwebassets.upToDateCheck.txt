@@ -822,6 +822,8 @@ wwwroot\assets\images\55dd1e22-22c4-4817-9b74-ac3483dd6e41_images.jfif
 wwwroot\assets\images\64d41885-4702-46fb-b01d-d4dfebd0d868images (1).jfif
 wwwroot\assets\images\6edc428a-925f-4be5-9ea8-bfbad9e51ae7Screenshot 2025-11-24 142413.png
 wwwroot\assets\images\75a2d4d2-0017-4551-bf45-5c88fd8c0febimages (1).jfif
+wwwroot\assets\images\7b6dddc3-028f-45be-98b8-7b2454752c25_WhatsApp Image 2025-04-08 at 00.46.11_f8ac2f16.jpg
+wwwroot\assets\images\7d05eb86-b3e7-4a75-b04a-1572175843ef_WhatsApp Image 2025-04-10 at 18.44.37_3fd622e0.jpg
 wwwroot\assets\images\83a1cc90-f63f-4e14-aa58-df7ecb98f481_WhatsApp Image 2025-04-08 at 00.46.11_f8ac2f16.jpg
 wwwroot\assets\images\8d068b00-ea5b-40b5-a99b-478dbdbcab9bScreenshot 2025-11-24 142413.png
 wwwroot\assets\images\a6f61108-825c-4d1d-9456-9614c68fedc1_images.jfif
