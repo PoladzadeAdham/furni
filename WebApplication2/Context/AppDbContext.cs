@@ -18,6 +18,8 @@ namespace WebApplication2.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<EmployeeService> EmployeeServices { get; set; }
 
     }
 }
